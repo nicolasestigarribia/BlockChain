@@ -5,24 +5,25 @@ import org.joda.time.DateTime;
 import java.sql.Date;
 
 public class Client {
-    private  int id;
+    private  int idClient;
     private String name;
     private String surname;
     private String dni;
     private DateTime dateOfBirth;
     private String telephone;
-    private User user;
-    private Wallet wallet;
 
-    public Client(String name, String surname, int id, String dni, DateTime dateOfBirth, String adress, String telephone, User user, Wallet wallet) {
+    private int idUser;
+    private int idWallet;
+
+    public Client(int idClient, String name, String surname, String dni, DateTime dateOfBirth, String telephone, int idUser, int idWallet) {
+        this.idClient = idClient;
         this.name = name;
         this.surname = surname;
-        this.id = id;
         this.dni = dni;
         this.dateOfBirth = dateOfBirth;
         this.telephone = telephone;
-        this.user = user;
-        this.wallet = wallet;
+        this.idUser = idUser;
+        this.idWallet = idWallet;
     }
 
     public Client() {
@@ -45,11 +46,11 @@ public class Client {
     }
 
     public int getId() {
-        return id;
+        return idClient;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idClient = id;
     }
 
     public String getDni() {
@@ -76,25 +77,23 @@ public class Client {
         this.telephone = telephone;
     }
 
-    public User getUser() {
-        return user;
+    public int getUser() {
+        return idUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(int user) {
+        this.idUser = user;
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "id=" + id +
+                "id=" + idClient +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", dni='" + dni + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", telephone='" + telephone + '\'' +
-                ", user=" + user +
-                ", wallet=" + wallet +
                 '}';
     }
 }

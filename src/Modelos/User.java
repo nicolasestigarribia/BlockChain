@@ -6,17 +6,36 @@ import java.util.UUID;
 
 public class User implements Serializable {
 
+    private  int idUser;
     private String email;
     private String password;
+
+
     private UUID uuid;
 
-    public User(String email, String userName, String password) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
         this.uuid = UUID.randomUUID();
     }
 
     public User() {
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {
@@ -38,8 +57,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "idUser=" + idUser +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", uuid=" + getUuid() +
                 '}';
     }
 

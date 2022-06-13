@@ -1,27 +1,23 @@
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import Modelos.User;
-import Negocio.UserController;
+import Modelos.Client;
+import Modelos.Cripto;
+import Modelos.Transfer;
+import Modelos.Wallet;
+import Negocio.ClientController;
+import Negocio.WalletController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 
         File userFile= new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileUser.json");
-
-        ArrayList<User> listUser= new ArrayList<User>();
+        File walletFile = new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileWallet.json");
+        ArrayList<Client> listUser= new ArrayList<Client>();
+        ArrayList<Wallet> walletList =  new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
         /*var aux = new User("nestigarribia", "1234");
@@ -33,12 +29,19 @@ public class Main {
         listUser.add(aux2);
         mapper.writeValue(userFile,listUser);*/
 
-        UserController userController = new UserController(userFile, listUser);
+        ClientController userController = new ClientController(userFile, listUser);
+        WalletController walletController = new WalletController(walletList, walletFile);
+
 
         var rta= userController.login("Manuel", "1234", "c09590fa-ac80-4563-8757-6e860cc04c64");
+        if (rta)
+        {
+            System.out.println("Usuario Logueado correctamente");
+        }
+        walletController.Insert(new Wallet(2, new ArrayList<Cripto>(), new ArrayList<Transfer>()));
+       var wallet = walletController.getById("80e0975b-b284-4ad0-bc12-e89996e9e8bd");
 
-        System.out.println(rta);
+        System.out.println(wallet);
     }
-
 
 }

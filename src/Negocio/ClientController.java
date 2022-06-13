@@ -53,6 +53,18 @@ public class ClientController {
         return (int)clientList.stream().count();
     }
 
+    public Client getByDni(String dni)
+    {
+        Client client = new Client();
+            readFile();
+            if(clientList.stream().filter(a ->a.getDni().equals(dni)).count() > 0)
+            {
+                client = clientList.stream().filter(a ->a.getDni().equals(dni)).findFirst().get();
+                return  client;
+            }
+        return client;
+    }
+
     private void readFile()
     {
         clientMapper = new ObjectMapper();

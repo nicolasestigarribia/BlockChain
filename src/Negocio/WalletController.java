@@ -1,5 +1,4 @@
 package Negocio;
-
 import Modelos.Wallet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -53,8 +52,6 @@ public class WalletController {
         return rta;
     }
 
-
-
     private void readFile()
     {
         walletMapper = new ObjectMapper();
@@ -66,4 +63,6 @@ public class WalletController {
             System.out.println("Error en abrir archivo : "+ e.getMessage());
         }
     }
+
+
 }

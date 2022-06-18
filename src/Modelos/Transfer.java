@@ -1,16 +1,16 @@
 package Modelos;
 
-import org.joda.time.DateTime;
+
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Transfer implements Serializable {
     private int id;
     private int countValidate;
     private int amount;
-    private DateTime date;
+    private LocalDate date;
     private String userSender;
     private String userReceiver;
     private String criptoName;
@@ -18,7 +18,7 @@ public class Transfer implements Serializable {
 
     public Transfer(int amount, String userSender, String userReceiver, String criptoName, State state) {
         this.amount = amount;
-        this.date = DateTime.now();
+        this.date = LocalDate.now();
         this.userSender = userSender;
         this.userReceiver = userReceiver;
         this.criptoName = criptoName;
@@ -44,11 +44,11 @@ public class Transfer implements Serializable {
         this.amount = amount;
     }
 
-    public DateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

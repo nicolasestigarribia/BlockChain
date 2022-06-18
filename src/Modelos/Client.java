@@ -1,8 +1,9 @@
 package Modelos;
 
-import org.joda.time.DateTime;
+
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,19 +12,19 @@ public class Client {
     private String name;
     private String surname;
     private String dni;
-    private DateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     private String telephone;
     private String email;
     private String password;
     private UUID uuid;
     private int idWallet;
 
-    public Client(int idClient, String name, String surname, String dni, DateTime dateOfBirth, String telephone, int idWallet) {
+    public Client(int idClient, String name, String surname, String dni, LocalDate dateOfBirth, String telephone, int idWallet) {
         this.idClient = idClient;
         this.name = name;
         this.surname = surname;
         this.dni = dni;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = LocalDate.of(1991,8,24);
         this.telephone = telephone;
         this.idWallet = idWallet;
     }
@@ -68,11 +69,11 @@ public class Client {
         this.dni = dni;
     }
 
-    public DateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(DateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

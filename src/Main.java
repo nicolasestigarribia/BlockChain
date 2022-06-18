@@ -28,7 +28,6 @@ public class Main {
         File transferFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\TransferWallet.json");
         File criptoFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileCripto.json");
 
-
         ArrayList<Transfer> transfersList = new ArrayList<Transfer>();
         ArrayList<Client> listUser= new ArrayList<Client>();
         ArrayList<Wallet> walletList =  new ArrayList<>();
@@ -48,8 +47,9 @@ public class Main {
         WalletController walletController = new WalletController(walletList, walletFile);
         TransferController transferController = new TransferController(transfersList, transferFile);
 
-        //transferController.insert(new Transfer());
-        //System.out.println(transferController.getById(3));
+
+        transferController.insert(new Transfer());
+        System.out.println(transferController.getById(3));
         //var rta= userController.login("Manuel", "1234", "c09590fa-ac80-4563-8757-6e860cc04c64");
         /*if (rta)
         {
@@ -57,8 +57,6 @@ public class Main {
         }
         walletController.Insert(new Wallet(2, new ArrayList<Cripto>(), new ArrayList<Transfer>()));
         var wallet = walletController.getById("80e0975b-b284-4ad0-bc12-e89996e9e8bd");
-
-        System.out.println(wallet);*/
 
         CriptoController criptoController = new CriptoController(criptoList, criptoFile);
 
@@ -73,6 +71,7 @@ public class Main {
         System.out.println(aux);
         System.out.println(criptoController.getByName("bitcoin"));
 
+        System.out.println(wallet);*/
 
     }
 

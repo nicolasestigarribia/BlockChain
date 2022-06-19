@@ -16,17 +16,17 @@ public class Client {
     private String telephone;
     private String email;
     private String password;
-    private UUID uuid;
-    private int idWallet;
+    private UUID uuidCliente;
+    private UUID idWallet;
 
-    public Client(int idClient, String name, String surname, String dni, LocalDate dateOfBirth, String telephone, int idWallet) {
-        this.idClient = idClient;
+    public Client(String name, String surname, String dni, LocalDate dateOfBirth, String telephone) {
+
         this.name = name;
         this.surname = surname;
         this.dni = dni;
-        this.dateOfBirth = LocalDate.of(1991,8,24);
+        this.dateOfBirth = dateOfBirth;
         this.telephone = telephone;
-        this.idWallet = idWallet;
+        this.uuidCliente= UUID.randomUUID();
     }
 
     public Client(String email, String password) {
@@ -110,18 +110,18 @@ public class Client {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return uuidCliente;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setUuidCliente(UUID uuidCliente) {
+        this.uuidCliente = uuidCliente;
     }
 
-    public int getIdWallet() {
+    public UUID getIdWallet() {
         return idWallet;
     }
 
-    public void setIdWallet(int idWallet) {
+    public void setIdWallet(UUID idWallet) {
         this.idWallet = idWallet;
     }
 
@@ -130,12 +130,12 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return Objects.equals(email, client.email) && Objects.equals(password, client.password) && Objects.equals(uuid, client.uuid);
+        return Objects.equals(email, client.email) && Objects.equals(password, client.password) && Objects.equals(uuidCliente, client.uuidCliente);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, uuid);
+        return Objects.hash(email, password, uuidCliente);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class Client {
                 ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", uuid=" + uuid +
+                ", uuid=" + uuidCliente +
                 ", idWallet=" + idWallet +
                 '}';
     }

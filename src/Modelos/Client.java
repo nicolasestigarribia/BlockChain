@@ -2,24 +2,27 @@ package Modelos;
 
 
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Client {
+public class Client implements Serializable {
     private  int idClient;
     private String name;
     private String surname;
     private String dni;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private String telephone;
     private String email;
     private String password;
     private UUID uuidCliente;
     private UUID idWallet;
 
-    public Client(String name, String surname, String dni, LocalDate dateOfBirth, String telephone) {
+    private boolean activ;
+
+    public Client(String name, String surname, String dni, String dateOfBirth,String email, String telephone, String pass) {
 
         this.name = name;
         this.surname = surname;
@@ -27,6 +30,9 @@ public class Client {
         this.dateOfBirth = dateOfBirth;
         this.telephone = telephone;
         this.uuidCliente= UUID.randomUUID();
+        this.activ = true;
+        this.email = email;
+        this.password = pass;
     }
 
     public Client(String email, String password) {
@@ -35,6 +41,16 @@ public class Client {
     }
 
     public Client() {
+        this.uuidCliente = UUID.randomUUID();
+        this.activ = true;
+    }
+
+    public boolean isActiv() {
+        return activ;
+    }
+
+    public void setActiv(boolean activ) {
+        this.activ = activ;
     }
 
     public String getName() {
@@ -53,10 +69,6 @@ public class Client {
         this.surname = surname;
     }
 
-    public int getId() {
-        return idClient;
-    }
-
     public void setId(int id) {
         this.idClient = id;
     }
@@ -69,11 +81,11 @@ public class Client {
         this.dni = dni;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

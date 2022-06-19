@@ -38,29 +38,24 @@ public class ClientController {
     }
 
         public int createUser (Client clientNew){
-
+            int rta =0;
             try {
-
                 readFile();
                 //Agrego el ID segun la cantidad de usuarios que haya en el archivo
                 clientNew.setIdClient((int) clientList.stream().count() +1);
                 clientList.add(clientNew);
-
                 clientMapper.writeValue(clientFile, clientList);
+                return clientNew.getIdClient();
 
             }catch (IOException ex)
             {
                 System.out.println("Error en abrir archivo : "+ ex.getMessage());
             }
-            return (int)clientList.stream().count();
-
-
+            return rta;
         }
-
 
     public int recordCounter ()
     {
-        var clientNew = new Client();
         double counter =0;
         readFile();
         counter = clientList.stream().count()+1;
@@ -68,7 +63,7 @@ public class ClientController {
         return (int)(counter);
     }
 
-    public static String toUpperMayus (String name){
+    public String toUpperMayus (String name){
         return name.substring(0,1).toUpperCase()+name.substring(1).toLowerCase();
     }
 
@@ -130,13 +125,13 @@ public class ClientController {
         return messsage;
     }
 
-    public static boolean dniValidation(String cadena) {
+    public boolean dniValidation(String cadena) {
         return cadena.matches("[0-9]+");
     }
 
-    public LocalDate dateInput(String userInput) { //M-d-yyyy
+    public String dateInput(String userInput) { //M-d-yyyy
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("M/dd/uuuu");
-        LocalDate date = LocalDate.parse(userInput, dateFormat);
+        String date = LocalDate.parse(userInput, dateFormat).toString();
         return date ;
 
     }
@@ -189,6 +184,18 @@ public class ClientController {
                 client = clientList.stream().filter(a ->a.getDni().equals(dni)).findFirst().get();
                 return  client;
             }
+        return client;
+    }
+
+    public Client getById(int id)
+    {
+        Client client = new Client();
+        readFile();
+        if(clientList.stream().filter(a ->a.getIdClient() == id).count() > 0)
+        {
+            client = clientList.stream().filter(a ->a.getIdClient() == id).findFirst().get();
+            return  client;
+        }
         return client;
     }
 

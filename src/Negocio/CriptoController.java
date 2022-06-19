@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class CriptoController {
@@ -44,21 +46,13 @@ public class CriptoController {
     //Metodo qu retorna la crito segun el nombre ingresado por parametro
     public Cripto getByName(String criptoName)
     {
-
             readFile();
             var rta = new Cripto();
             var aux= (criptoList.stream().filter(n -> n.getName().equalsIgnoreCase(criptoName) ).count()) ;
             if (aux>0) {
-            rta = criptoList.stream().filter(n -> n.getName().equalsIgnoreCase(criptoName)).findFirst().get();
-
-
-            }else{
-            System.out.println("La cripto ingresada no se encuentra");
+                return rta = criptoList.stream().filter(n -> n.getName().equalsIgnoreCase(criptoName)).findFirst().get();
             }
-            return rta;
-
-
-
+            return null;
     }
 
     private void readFile()

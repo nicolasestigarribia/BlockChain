@@ -68,10 +68,19 @@ public class ClientController {
     }
 
     public boolean mailValidation(String mail){
+
         String validMail = "^(.+)@(.+)$";
         Pattern patron = Pattern.compile(validMail);
         Matcher mat = patron.matcher(mail);
-        return mat.find();
+        boolean val = mat.find();
+        boolean rta = false;
+        readFile();
+        Client client = new Client();
+        if(clientList.stream().filter(a ->a.getEmail().equals(mail)).count() == 0 && val ==true)
+        {
+            rta = true;
+        }
+        return rta;
 
     }
 
@@ -126,7 +135,16 @@ public class ClientController {
     }
 
     public boolean dniValidation(String cadena) {
-        return cadena.matches("[0-9]+");
+        boolean val = false;
+        double dniOk = Integer.parseInt(cadena);
+        boolean cad = cadena.matches("[0-9]+");
+        readFile();
+        Client client = new Client();
+        if(clientList.stream().filter(a ->a.getDni().equals(cadena)).count() == 0 && dniOk>1000000 && cad ==true)
+        {
+            val = true;
+        }
+        return val;
     }
 
     public String dateInput(String userInput) { //M-d-yyyy

@@ -1,1 +1,3 @@
+
 [{"idClient":1,"name":"Nicolas","surname":"Estigarribia","dni":"4534313","dateOfBirth":"1997-04-28","telephone":"123545644","email":"nico@gmail.com","password":"NIcola12","uuidCliente":"7d5df82f-d0c6-4844-8415-259252172ef5","idWallet":"033dbc80-fbef-4241-b4b1-aba20a797d45","activ":true},{"idClient":2,"name":"Agustin","surname":"Turza","dni":"40251343","dateOfBirth":"1997-04-28","telephone":"12346544","email":"agus@gmail.com","password":"TUrza123","uuidCliente":"649090a0-0547-44b6-a26a-94bf1ee65480","idWallet":"9feeaba0-f1cd-43cf-86da-8c6ced346133","activ":true}]
+

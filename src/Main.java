@@ -2,6 +2,8 @@ import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.DateTimeException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,14 +34,14 @@ public class Main {
         File walletFile = new File("C:\\Users\\nestigarribia\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileWallet.json");
         File transferFile = new File("C:\\Users\\nestigarribia\\Documents\\GitHub\\BlockChain\\src\\FileData\\TransferWallet.json");*/
 
-        File userFile= new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileUser.json");
+       /* File userFile= new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileUser.json");
         File walletFile = new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\FileWallet.json");
-        File transferFile = new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\TransferWallet.json");
+        File transferFile = new File("C:\\Users\\gc\\Documents\\GitHub\\BlockChain\\src\\FileData\\TransferWallet.json");*/
 
-        /*File userFile= new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileUser.json");
+        File userFile= new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileUser.json");
         File walletFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileWallet.json");
         File transferFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\TransferWallet.json");
-        File criptoFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileCripto.json");*/
+        File criptoFile = new File("C:\\Users\\agust\\OneDrive\\Documentos\\GitHub\\BlockChain\\src\\FileData\\FileCripto.json");
 
         ArrayList<Transfer> transfersList = new ArrayList<Transfer>();
         ArrayList<Client> listUser= new ArrayList<Client>();
@@ -86,8 +88,10 @@ public class Main {
 
         System.out.println(wallet);*/
         MenuPrincipal();
+
         //MenuTransferencia(walletController.getByIdWallet("033dbc80-fbef-4241-b4b1-aba20a797d45"));
         //MenuValidarTransferencia();
+       // MenuTransferencia(walletController.getByIdWallet("a4556932-2ec0-46eb-833b-ed455400841f"));
     }
 
 
@@ -114,8 +118,7 @@ public class Main {
                 break;
         }
     }
-    public static void MenuRegistry()
-    {
+    public static void MenuRegistry() {
         System.out.println("///////  Menu Registro  ////////");
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nIngrese nombre: ");
@@ -127,27 +130,44 @@ public class Main {
         boolean rta = false;
         String dni = "";
         //Mientra rta sea true, sigue el bucle
-        while (!rta)
-        {
-            System.out.println("\nIngrese DNI: ");
-            dni = scanner.nextLine();
-            rta = userController.dniValidation(dni);
-            System.out.println(rta == false ? "Formato de dni invalido \n" : "");
+        while (!rta) {
+            try {
+                System.out.println("\nIngrese DNI: ");
+                dni = scanner.nextLine();
+                rta = userController.dniValidation(dni);
+            } catch (NumberFormatException ex) {
+                System.out.println(rta == false ? "Formato de dni invalido \n" : "");
+            }
         }
 
-        System.out.println("\n Ingrese fecha de nacimiento: m/dd/yyyy");
-        String birthday = userController.dateInput(scanner.nextLine());
+
+        rta = false;
+        String birthday = "";
+
+        while (!rta) {
+            try {
+                System.out.println("\n Ingrese fecha de nacimiento: m/dd/yyyy");
+                birthday = scanner.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/dd/uuuu");
+                String date = birthday;
+                //convert String to LocalDate
+                LocalDate localDate = LocalDate.parse(date, formatter);
+                rta = userController.ageValidation(localDate);
+            }   catch(DateTimeException ex) {
+                System.out.println(rta == false ? "Formato invalido, debe ser mayo de edad\n" : "");
+        }}
 
         rta = false;
         String telephone = "";
         //Mientra rta sea true, sigue el bucle
-        while (!rta)
-        {
+        while (!rta) {
+            try{
             System.out.println("\n Ingrese numero de telefono: ");
             telephone = scanner.nextLine();
-            rta = userController.dniValidation(telephone);
+            rta = userController.dniValidation(telephone);}
+            catch (NumberFormatException ex){
             System.out.println(rta == false ? "Formato de telefono invalido \n" : "");
-        }
+        }}
 
         rta = false;
         String email = "";
@@ -245,11 +265,12 @@ public class Main {
                 MenuTransacciones();
                 break;
             case 4:
-                System.out.println("\n Su historial de transacciones es : ");
+                System.out.println("\n El historial de transacciones es : ");
                 List<Transfer> all = transferController.getAll();
                 for (Transfer transfer: all) {
                     System.out.println(all);
                 }
+                MenuWallet();
                 break;
             case 5:
                 MenuPrincipal();

@@ -1,1 +1,3 @@
-[{"idClient":1,"walletCode":"a4556932-2ec0-46eb-833b-ed455400841f","cripto":{"name":"UTNCoins","amount":0,"price":1.0},"tranfList":[]},{"idClient":2,"walletCode":"f7cf6c37-6ff6-4ee4-8c29-d88c077f0e22","cripto":{"name":"UTNCoins","amount":200,"price":1.0},"tranfList":[]},{"idClient":3,"walletCode":"93762379-f719-4e2c-9655-491de1140b81","cripto":{"name":"UTNCoins","amount":100,"price":1.0},"tranfList":[]}]
+
+[{"idClient":1,"walletCode":"033dbc80-fbef-4241-b4b1-aba20a797d45","cripto":{"name":"UTNCoins","amount":20,"price":1.0},"tranfList":["316969fe-e991-4cdc-b4fc-38ddda983970","aa4c9dc7-9ddc-4298-8aba-9aa9df57c64b","fc80c1c9-d662-4ce7-a474-0ba8f8b08ac3","b53024d1-b877-4b7f-af32-25ef9000051f"]},{"idClient":2,"walletCode":"9feeaba0-f1cd-43cf-86da-8c6ced346133","cripto":{"name":"UTNCoins","amount":160,"price":1.0},"tranfList":[]}]
+

@@ -95,6 +95,13 @@ public class Transfer implements Serializable {
         this.countValidate = countValidate;
     }
 
+    public UUID getTransferCode() {
+        return transferCode;
+    }
+
+    public void setTransferCode(UUID transferCode) {
+        this.transferCode = transferCode;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,13 +120,28 @@ public class Transfer implements Serializable {
     public String toString() {
         return "Transfer{" +
                 "id=" + id +
-                ", date=" + date +
                 ", countValidate=" + countValidate +
                 ", amount=" + amount +
+                ", date='" + date + '\'' +
                 ", userSender='" + userSender + '\'' +
                 ", userReceiver='" + userReceiver + '\'' +
                 ", criptoName='" + criptoName + '\'' +
                 ", state=" + state +
+                ", transferCode=" + transferCode +
                 '}';
+    }
+
+    public void mostrar()
+    {
+        System.out.println("\n------------------------------");
+        System.out.println("\nTransferencia n° "+ id);
+        System.out.println("\nCodigo: "+ transferCode);
+        System.out.println("\nContador: "+ countValidate);
+        System.out.println("\nFecha : "+date);
+        System.out.println("\nRemitente: "+ userSender);
+        System.out.println("\nRecepetor: " + userReceiver);
+        System.out.println("\nCripto: "+ criptoName);
+        System.out.println("\nEstado: "+ state);
+        System.out.println("\n------------------------------");
     }
 }

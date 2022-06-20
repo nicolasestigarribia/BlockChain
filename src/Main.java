@@ -182,6 +182,7 @@ public class Main {
             System.out.println("\n Ingrese Codigo UUID : ");
             String uuid = scan.nextLine();
 
+            try{
             var client = userController.login(email.trim(),pass.trim(),uuid.trim());
             if(client != null)
             {
@@ -191,9 +192,13 @@ public class Main {
             }else{
                 System.out.println("\n ------ Usuario invalido ------");
                 MenuPrincipal();
+            }}catch(IllegalArgumentException ex) {
+                System.out.println("Argumento invalido");
             }
+            }
+
         }
-    }
+
 
     public static void MenuWallet()
     {

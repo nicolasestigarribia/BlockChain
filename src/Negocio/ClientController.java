@@ -37,6 +37,21 @@ public class ClientController {
         return null;
     }
 
+    public int Update(Client clientUpdate)
+    {
+        try {
+            readFile();
+            var clientToRemove = getById(clientUpdate.getIdClient());
+            clientList.remove(clientToRemove);
+            clientList.add(clientUpdate);
+            clientMapper.writeValue(clientFile,clientList);
+            return (int)clientList.stream().count();
+        } catch (IOException e) {
+            System.out.println("Error al intentar escribir el Archivo  :"+ e.getMessage() );
+        }
+        return  0;
+    }
+
         public int createUser (Client clientNew){
             int rta =0;
             try {
@@ -209,6 +224,12 @@ public class ClientController {
         } catch (IOException e) {
             System.out.println("Error en abrir archivo : "+ e.getMessage());
         }
+    }
+
+    public Client getClienteByIdWallet(String idWallet)
+    {
+        var wallet = new WalletController().getByIdWallet(idWallet);
+        return getById(wallet.getIdClient());
     }
 
 }

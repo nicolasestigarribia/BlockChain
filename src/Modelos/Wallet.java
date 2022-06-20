@@ -16,7 +16,6 @@ public class Wallet implements Serializable {
         this.idClient = idCLient;
         this.cripto = new Cripto("UTNCoins",100,1);
         this.tranfList = tranfList;
-        this.walletCode = UUID.randomUUID();
     }
 
     public Wallet() {

@@ -33,6 +33,7 @@ public class Client implements Serializable {
         this.activ = true;
         this.email = email;
         this.password = pass;
+        this.idWallet = UUID.randomUUID();
     }
 
     public Client(String email, String password) {
@@ -41,8 +42,6 @@ public class Client implements Serializable {
     }
 
     public Client() {
-        this.uuidCliente = UUID.randomUUID();
-        this.activ = true;
     }
 
     public boolean isActiv() {

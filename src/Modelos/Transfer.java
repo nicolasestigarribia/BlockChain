@@ -5,24 +5,27 @@ package Modelos;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Transfer implements Serializable {
     private int id;
     private int countValidate;
     private int amount;
-    private LocalDate date;
+    private String date;
     private String userSender;
     private String userReceiver;
     private String criptoName;
     private State state;
+    private UUID transferCode;
 
     public Transfer(int amount, String userSender, String userReceiver, String criptoName, State state) {
         this.amount = amount;
-        this.date = LocalDate.now();
+        this.date = LocalDate.now().toString();
         this.userSender = userSender;
         this.userReceiver = userReceiver;
         this.criptoName = criptoName;
         this.state = state;
+        this.transferCode = UUID.randomUUID();
     }
 
     public Transfer() {
@@ -44,11 +47,11 @@ public class Transfer implements Serializable {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

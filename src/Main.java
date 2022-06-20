@@ -9,10 +9,7 @@ import java.time.LocalDate;
 import java.lang.System;
 
 
-import Modelos.Client;
-import Modelos.Cripto;
-import Modelos.Transfer;
-import Modelos.Wallet;
+import Modelos.*;
 import Negocio.ClientController;
 import Negocio.CriptoController;
 import Negocio.TransferController;
@@ -88,7 +85,8 @@ public class Main {
         System.out.println(criptoController.getByName("bitcoin"));
 
         System.out.println(wallet);*/
-        MenuPrincipal();
+        //MenuPrincipal();
+        MenuTransferencia(walletController.getByIdWallet("a4556932-2ec0-46eb-833b-ed455400841f"));
     }
 
 
@@ -174,14 +172,15 @@ public class Main {
             rta = msj.length() > 0 ? false : true;
             System.out.println(msj);
         }
-        Client clientNew = new Client(name,surname,dni,birthday,email,telephone,pass);
+        Client clientNew = new Client(name.trim(),surname.trim(),dni.trim(),birthday.trim(),email.trim(),telephone.trim(),pass.trim());
         int idCLient= userController.createUser(clientNew);
         if(idCLient >0)
         {
             //Creamos unuevaa n wallet para el cliente nuevo y seteamos su idwallet correspondiente
             Wallet newWallet = new Wallet(idCLient, new ArrayList<Transfer>());
+            newWallet.setWalletCode(clientNew.getIdWallet());
             walletController.Insert(newWallet);
-            clientNew.setIdWallet(newWallet.getWalletCode());
+
 
             System.out.println("\n Usuario creado con exito, su UUID es : " + userController.getById(idCLient).getUuidCliente());
             System.out.println("Guarde su codigo de seguridad, no lo comparta con nadie \n");
@@ -218,37 +217,91 @@ public class Main {
 
     public static void MenuWallet()
     {
+        Scanner scan = new Scanner(System.in);
         System.out.println("\n\t//////  MENU WALLET //////");
         System.out.println("\n 1- Consultar Activos" );
         System.out.println("\n 2- Realizar transaccion a otro usuario" );
         System.out.println("\n 3- Ver transacciones sin validar " );
         System.out.println("\n 4- Ver historial de transacciones" );
+        System.out.println("\n 5- Salir");
+        System.out.println("\nIngrese opcion deseada :");
+        int rta = scan.nextInt();
         Wallet walletClient = walletController.getByIdClient(userLogged.getIdClient());
-        int rta =0;
         switch (rta)
         {
             case 1:
                 System.out.println("\n Sus activos son :");
-                System.out.println(walletClient.getCripto());
+                if(walletClient.getCripto().getAmount() > 0)
+                {
+                    System.out.println(walletClient.getCripto());
+                }else{
+                    System.out.println("Usted no posee activos en su wallet");
+                }
+                MenuWallet();
                 break;
             case 2:
+                MenuTransferencia(walletClient);
                 break;
             case 3:
                 break;
             case 4:
                 break;
+            case 5:
+                userLogged= new Client();
+                MenuPrincipal();
+                break;
         }
     }
 
-    public static void MenuConsultaCripto(List<Cripto> listCripto)
+    public static void MenuTransferencia(Wallet clientWallet)
     {
-        System.out.println("/// 1- Consultar Activos \n");
-        if(!listCripto.isEmpty())
+
+        int flag =0;
+        while (flag == 0)
         {
-            for (Cripto cripto: listCripto) {
-                System.out.println(cripto);
+            Scanner scan = new Scanner(System.in);
+            System.out.println("\t/// 2- Realizar Tranferencia \n");
+            System.out.println("\nIngrese el codigo de la wallet al cual enviar:  ");
+            var uuid= "f7cf6c37-6ff6-4ee4-8c29-d88c077f0e22";
+            var walletReceiver = walletController.getByIdWallet(uuid);
+
+            while(flag == 0)
+            {
+                if(walletReceiver != null)
+                {
+                    scan = new Scanner(System.in);
+                    System.out.println("\n Ingrese monto a enviar: ");
+                    var monto = scan.nextInt();
+                    var aux =clientWallet.getCripto().getAmount();
+                    if( aux >= monto)
+                    {
+                        //var montoResta = clientWallet.getCripto().getAmount() -monto;
+                        //var montoSuma = walletReceiver.getCripto().getAmount() + monto;
+                        //walletReceiver.getCripto().setAmount(montoSuma);
+                        //clientWallet.getCripto().setAmount(montoResta);
+                        var newTransfer = new Transfer(monto,clientWallet.getWalletCode().toString(),walletReceiver.getWalletCode().toString(), "UTNCoins", State.WAITING);
+                        clientWallet.getTranfList().add(newTransfer);
+                        walletController.update(clientWallet);
+                        //walletController.Update(walletReceiver);
+                        transferController.insert(newTransfer);
+                        System.out.println("\n¡ Transferencia realizada con exito !");
+                    }else{
+                        System.out.println("\n No posee el monto suficiente para la transferencia");
+
+                    }
+                }else{
+                    System.out.println("\n La wallet ingresada no existe");
+                }
+                System.out.println("Desea continuar ? s/n");
+                var rta =scan.nextLine();
+                if(rta.toLowerCase() =="n")
+                {
+                    flag =1;
+                    MenuWallet();
+                }
             }
         }
+
     }
 
 

@@ -1,4 +1,5 @@
 package Negocio;
+import Modelos.Client;
 import Modelos.Cripto;
 import Modelos.Wallet;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,13 +15,16 @@ import java.util.stream.*;
 
 public class WalletController {
 
-    public ArrayList<Wallet> walletList = new ArrayList<Wallet>();
+    private ArrayList<Wallet> walletList = new ArrayList<Wallet>();
     private ObjectMapper walletMapper;
     private File walletFile ;
 
     public WalletController(ArrayList<Wallet> walletList, File walletFile) {
         this.walletList = walletList;
         this.walletFile = walletFile;
+    }
+
+    public WalletController() {
     }
 
     public int Insert (Wallet newWallet)
@@ -40,18 +44,30 @@ public class WalletController {
         }
         return (int)walletList.stream().count();
     }
-
+    public int update(Wallet walletUpdate)
+    {
+        try {
+            readFile();
+            var walletRemove= getByIdWallet(walletUpdate.getWalletCode().toString());
+            walletList.remove(walletRemove);
+            walletList.add(walletUpdate);
+            walletMapper.writeValue(walletFile,walletList);
+            return (int)walletList.stream().count();
+        } catch (IOException e) {
+            System.out.println("Error al intentar escribir el archivo wallet" + e.getMessage());
+        }
+        return 0;
+    }
     //Metodo qu retorna una wallet segun el codigo de wallet ingresado por parametro
     public Wallet getByIdWallet(String codeWallet)
     {
         var code = UUID.fromString(codeWallet);
         readFile();
-        var rta = new Wallet();
             if(walletList.stream().filter(a -> a.getWalletCode().equals(code)).count() > 0)
             {
                 return walletList.stream().filter(a -> a.getWalletCode().equals(code)).findFirst().get();
             }
-        return rta;
+        return null;
     }
 
     public Wallet getByIdClient(int idClient)

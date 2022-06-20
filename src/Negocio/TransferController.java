@@ -62,6 +62,20 @@ public class TransferController {
         return transferList;
     }
 
+    public void Update(Transfer transferUpdate){
+
+
+        try {
+            readFile();
+            var transferRemove = getById(transferUpdate.getId());
+            transferList.remove(transferRemove);
+            transferList.add((transferUpdate));
+            transferMapper.writeValue(transferFile, transferList);
+        } catch (IOException e) {
+            System.out.println("Error al intentar escribir el archivo : "+ e.getMessage());
+        }
+    }
+
     private void readFile()
     {
         transferMapper = new ObjectMapper();

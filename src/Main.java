@@ -221,7 +221,7 @@ public class Main {
         System.out.println("\n\t//////  MENU WALLET //////");
         System.out.println("\n 1- Consultar Activos" );
         System.out.println("\n 2- Realizar transaccion a otro usuario" );
-        System.out.println("\n 3- Ver transacciones sin validar " );
+        System.out.println("\n 3- Menu Transacciones " );
         System.out.println("\n 4- Ver historial de transacciones" );
         Wallet walletClient = walletController.getByIdClient(userLogged.getIdClient());
         int rta =0;
@@ -232,11 +232,46 @@ public class Main {
                 System.out.println(walletClient.getCripto());
                 break;
             case 2:
+
                 break;
             case 3:
+                MenuTransacciones();
+
                 break;
             case 4:
+                System.out.println("\n Su historial de transacciones es : ");
+                List<Transfer> all = transferController.getAll();
+                for (Transfer transfer: all) {
+                    System.out.println(all);
+                }
                 break;
+        }
+    }
+
+    public static void MenuTransacciones (){
+        System.out.println("\n\t//////  MENU TRANSACCIONES //////");
+        System.out.println("\n 1- Mostrar todas las  transacciones pendientes de validacion" );
+        System.out.println("\n 2- Ver mis transacciones sin validar" );
+        System.out.println("\n 3- Validar una transaccion" );
+        Wallet walletClient = walletController.getByIdClient(userLogged.getIdClient());
+        int rta=0;
+        switch (rta){
+            case 1:
+                List <Transfer> waitingListAll = transferController.getWaitingAll();
+                for (Transfer transfer: waitingListAll) {
+                    System.out.println(transfer);
+                }
+
+            break;
+            case 2:
+                System.out.println("\n Sus transacciones sin validar son : ");
+                ArrayList <Transfer> waitingList = transferController.getWaitingT(walletClient.getTranfList());
+                for (Transfer transfer: waitingList) {
+                    System.out.println(transfer);
+                }
+
+                break;
+
         }
     }
 

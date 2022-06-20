@@ -1,5 +1,7 @@
 package Negocio;
 import Modelos.Cripto;
+import Modelos.State;
+import Modelos.Transfer;
 import Modelos.Wallet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -22,6 +24,9 @@ public class WalletController {
         this.walletList = walletList;
         this.walletFile = walletFile;
     }
+
+
+
 
     public int Insert (Wallet newWallet)
     {

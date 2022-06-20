@@ -1,4 +1,5 @@
 package Negocio;
+import Modelos.Cripto;
 import Modelos.Wallet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -7,6 +8,7 @@ import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.*;
 
@@ -40,7 +42,7 @@ public class WalletController {
     }
 
     //Metodo qu retorna una wallet segun el codigo de wallet ingresado por parametro
-    public Wallet getById(String codeWallet)
+    public Wallet getByIdWallet(String codeWallet)
     {
         var code = UUID.fromString(codeWallet);
         readFile();
@@ -49,6 +51,17 @@ public class WalletController {
             {
                 return walletList.stream().filter(a -> a.getWalletCode().equals(code)).findFirst().get();
             }
+        return rta;
+    }
+
+    public Wallet getByIdClient(int idClient)
+    {
+        readFile();
+        var rta = new Wallet();
+        if(walletList.stream().filter(a -> a.getIdClient() == idClient).count() > 0)
+        {
+            return walletList.stream().filter(a -> a.getIdClient() == idClient).findFirst().get();
+        }
         return rta;
     }
 

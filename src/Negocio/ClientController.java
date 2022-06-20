@@ -24,17 +24,17 @@ public class ClientController {
     }
 
     //Retorno true si el login fue correcto.
-    public boolean login(String email, String pass, String code)
+    public Client login(String email, String pass, String code)
     {
         Client clientLogin = new Client(email,pass);
         clientLogin.setUuidCliente(UUID.fromString(code));
         readFile();
             for (var client: clientList) {
                 if (clientLogin.equals(client)){
-                    return true;
+                    return client;
                 }
             }
-        return false;
+        return null;
     }
 
         public int createUser (Client clientNew){

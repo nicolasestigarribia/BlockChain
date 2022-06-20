@@ -121,7 +121,7 @@ public class Client implements Serializable {
         this.password = password;
     }
 
-    public UUID getUuid() {
+    public UUID getUuidCliente() {
         return uuidCliente;
     }
 
@@ -161,7 +161,7 @@ public class Client implements Serializable {
                 ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", uuid=" + uuidCliente +
+                ", uuidCliente=" + uuidCliente +
                 ", idWallet=" + idWallet +
                 '}';
     }

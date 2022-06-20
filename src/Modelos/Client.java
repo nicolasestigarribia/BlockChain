@@ -164,4 +164,17 @@ public class Client implements Serializable {
                 ", idWallet=" + idWallet +
                 '}';
     }
+
+    public void mostrarCliente (){
+        System.out.println("---------------------------------" ) ;
+        System.out.println("Id Cliente :" + idClient ) ;
+        System.out.println("Nombre :" + name );
+        System.out.println("Apellido :" + surname );
+        System.out.println("Dni :" + dni );
+        System.out.println("Fecha de Nacimiento :" + dateOfBirth );
+        System.out.println("Telefono :"+ telephone );
+        System.out.println("Mail :"+ email );
+        System.out.println("iDWallet :" + idWallet);
+        System.out.println("---------------------------------" ) ;
+    }
 }

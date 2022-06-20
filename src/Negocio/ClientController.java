@@ -151,8 +151,8 @@ public class ClientController {
 
     public boolean dniValidation(String cadena) {
         boolean val = false;
-        double dniOk = Integer.parseInt(cadena);
         boolean cad = cadena.matches("[0-9]+");
+        double dniOk = Double.parseDouble(cadena);
         readFile();
         Client client = new Client();
         if(clientList.stream().filter(a ->a.getDni().equals(cadena)).count() == 0 && dniOk>1000000 && cad ==true)

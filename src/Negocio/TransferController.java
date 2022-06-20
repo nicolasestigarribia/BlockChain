@@ -1,5 +1,6 @@
 package Negocio;
 
+import Modelos.State;
 import Modelos.Transfer;
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -23,6 +24,29 @@ public class TransferController {
     public TransferController(ArrayList<Transfer> transferList, File transferFile) {
         this.transferList = transferList;
         this.transferFile = transferFile;
+    }
+
+    public ArrayList <Transfer> getWaitingT(List<Transfer> transferList){
+            ArrayList <Transfer> transferWait  = new ArrayList<>();
+          for ( Transfer transfer: transferList){
+          if (transfer.getState()==State.WAITING ){
+              transferWait.add(transfer);
+          }
+      }
+
+      return  transferWait;
+  }
+
+    public List <Transfer> getWaitingAll(){
+
+        List <Transfer> transferWait  = getAll();
+        for ( Transfer transfer: transferList){
+            if (transfer.getState()==State.WAITING ){
+                transferWait.add(transfer);
+            }
+        }
+
+        return  transferWait;
     }
 
 

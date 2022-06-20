@@ -9,13 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class CriptoController {
 
     //insert baja  abm get by id y
-    public ArrayList<Cripto> criptoList = new ArrayList<Cripto>();
+    private ArrayList<Cripto> criptoList = new ArrayList<Cripto>();
     private ObjectMapper criptoMapper;
     private File criptotFile;
 
@@ -53,6 +54,12 @@ public class CriptoController {
                 return rta = criptoList.stream().filter(n -> n.getName().equalsIgnoreCase(criptoName)).findFirst().get();
             }
             return null;
+    }
+
+    public List<Cripto> getAll()
+    {
+        readFile();
+        return criptoList;
     }
 
     private void readFile()

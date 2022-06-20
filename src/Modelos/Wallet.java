@@ -9,12 +9,12 @@ public class Wallet implements Serializable {
 
     private int idClient;
     private UUID walletCode;
-    private List<Cripto> criptoList;
+    private Cripto cripto;
     private List<Transfer> tranfList;
 
-    public Wallet(int idCLient, List<Cripto> criptoList, List<Transfer> tranfList) {
+    public Wallet(int idCLient, List<Transfer> tranfList) {
         this.idClient = idCLient;
-        this.criptoList = criptoList;
+        this.cripto = new Cripto("UTNCoins",100,1);
         this.tranfList = tranfList;
         this.walletCode = UUID.randomUUID();
     }
@@ -29,12 +29,12 @@ public class Wallet implements Serializable {
         this.idClient = idClient;
     }
 
-    public List<Cripto> getCriptoList() {
-        return criptoList;
+    public Cripto getCripto() {
+        return cripto;
     }
 
-    public void setCriptoList(List<Cripto> criptoList) {
-        this.criptoList = criptoList;
+    public void setCripto(Cripto cripto) {
+        this.cripto = cripto;
     }
 
     public List<Transfer> getTranfList() {
@@ -71,7 +71,7 @@ public class Wallet implements Serializable {
     public String toString() {
         return "Wallet{" +
                 "idClient=" + idClient +
-                ", criptoList=" + criptoList +
+                ", cripto=" + cripto +
                 ", tranfList=" + tranfList +
                 ", walletCode=" + walletCode +
                 '}';

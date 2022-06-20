@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.lang.System;
@@ -22,6 +23,10 @@ public class Main {
     static ClientController userController;
     static WalletController walletController;
     static TransferController transferController;
+
+    static CriptoController criptoController;
+
+    static Client userLogged;
     public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 
         // Cambiar path segun el directorio donde estemos trabajando
@@ -100,7 +105,7 @@ public class Main {
         switch (rta)
         {
             case 1:
-                //Menu Login
+                MenuLogin();
                 break;
             case 2:
                 MenuRegistry();
@@ -112,11 +117,12 @@ public class Main {
     }
     public static void MenuRegistry()
     {
+        System.out.println("///////  Menu Registro  ////////");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese nombre: \n");
+        System.out.println("\nIngrese nombre: ");
         String name = userController.toUpperMayus(scanner.nextLine());
 
-        System.out.println("Ingrese apellido: \n");
+        System.out.println("\nIngrese apellido: ");
         String surname = userController.toUpperMayus(scanner.nextLine());
 
         boolean rta = false;
@@ -124,7 +130,7 @@ public class Main {
         //Mientra rta sea true, sigue el bucle
         while (!rta)
         {
-            System.out.println("Ingrese DNI: \n");
+            System.out.println("\nIngrese DNI: ");
             dni = scanner.nextLine();
             rta = userController.dniValidation(dni);
             System.out.println(rta == false ? "Formato de dni invalido \n" : "");
@@ -168,17 +174,82 @@ public class Main {
             rta = msj.length() > 0 ? false : true;
             System.out.println(msj);
         }
-        Client clientNew = new Client(name,surname,dni,birthday,telephone,email,pass);
+        Client clientNew = new Client(name,surname,dni,birthday,email,telephone,pass);
         int idCLient= userController.createUser(clientNew);
         if(idCLient >0)
         {
-            System.out.println("\nUsuario creado con exito, su UUID es : " + userController.getById(idCLient).getUuid());
-            System.out.println("Guardo su codigo de seguridad, no lo comparta con nadie \n");
+            //Creamos unuevaa n wallet para el cliente nuevo y seteamos su idwallet correspondiente
+            Wallet newWallet = new Wallet(idCLient, new ArrayList<Transfer>());
+            walletController.Insert(newWallet);
+            clientNew.setIdWallet(newWallet.getWalletCode());
+
+            System.out.println("\n Usuario creado con exito, su UUID es : " + userController.getById(idCLient).getUuidCliente());
+            System.out.println("Guarde su codigo de seguridad, no lo comparta con nadie \n");
+            MenuPrincipal();
         }
 
     }
 
+    public static void MenuLogin()
+    {
+        boolean rta = false;
+        while (!rta){
+            Scanner scan = new Scanner(System.in);
+            System.out.println("\t\n///////  Login //////// \n");
+            System.out.println("Ingrese Mail :");
+            String email= scan.nextLine();
+            System.out.println("\n Ingrese contraseña:");
+            String pass = scan.nextLine();
+            System.out.println("\n Ingrese Codigo UUID : ");
+            String uuid = scan.nextLine();
 
+            var client = userController.login(email.trim(),pass.trim(),uuid.trim());
+            if(client != null)
+            {
+                rta = true;
+                 userLogged =client;
+                 MenuWallet();
+            }else{
+                System.out.println("\n ------ Usuario invalido ------");
+                MenuPrincipal();
+            }
+        }
+    }
+
+    public static void MenuWallet()
+    {
+        System.out.println("\n\t//////  MENU WALLET //////");
+        System.out.println("\n 1- Consultar Activos" );
+        System.out.println("\n 2- Realizar transaccion a otro usuario" );
+        System.out.println("\n 3- Ver transacciones sin validar " );
+        System.out.println("\n 4- Ver historial de transacciones" );
+        Wallet walletClient = walletController.getByIdClient(userLogged.getIdClient());
+        int rta =0;
+        switch (rta)
+        {
+            case 1:
+                System.out.println("\n Sus activos son :");
+                System.out.println(walletClient.getCripto());
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+
+    public static void MenuConsultaCripto(List<Cripto> listCripto)
+    {
+        System.out.println("/// 1- Consultar Activos \n");
+        if(!listCripto.isEmpty())
+        {
+            for (Cripto cripto: listCripto) {
+                System.out.println(cripto);
+            }
+        }
+    }
 
 
 

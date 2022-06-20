@@ -85,8 +85,9 @@ public class Main {
         System.out.println(criptoController.getByName("bitcoin"));
 
         System.out.println(wallet);*/
-        //MenuPrincipal();
-        MenuTransferencia(walletController.getByIdWallet("a4556932-2ec0-46eb-833b-ed455400841f"));
+        MenuPrincipal();
+        //MenuTransferencia(walletController.getByIdWallet("033dbc80-fbef-4241-b4b1-aba20a797d45"));
+        //MenuValidarTransferencia();
     }
 
 
@@ -137,7 +138,6 @@ public class Main {
         System.out.println("\n Ingrese fecha de nacimiento: m/dd/yyyy");
         String birthday = userController.dateInput(scanner.nextLine());
 
-
         rta = false;
         String telephone = "";
         //Mientra rta sea true, sigue el bucle
@@ -148,7 +148,6 @@ public class Main {
             rta = userController.dniValidation(telephone);
             System.out.println(rta == false ? "Formato de telefono invalido \n" : "");
         }
-
 
         rta = false;
         String email = "";
@@ -177,7 +176,7 @@ public class Main {
         if(idCLient >0)
         {
             //Creamos unuevaa n wallet para el cliente nuevo y seteamos su idwallet correspondiente
-            Wallet newWallet = new Wallet(idCLient, new ArrayList<Transfer>());
+            Wallet newWallet = new Wallet(idCLient, new ArrayList<String>());
             newWallet.setWalletCode(clientNew.getIdWallet());
             walletController.Insert(newWallet);
 
@@ -233,7 +232,7 @@ public class Main {
                 System.out.println("\n Sus activos son :");
                 if(walletClient.getCripto().getAmount() > 0)
                 {
-                    System.out.println(walletClient.getCripto());
+                    walletClient.getCripto().mostrar();
                 }else{
                     System.out.println("Usted no posee activos en su wallet");
                 }
@@ -244,7 +243,6 @@ public class Main {
                 break;
             case 3:
                 MenuTransacciones();
-
                 break;
             case 4:
                 System.out.println("\n Su historial de transacciones es : ");
@@ -252,6 +250,9 @@ public class Main {
                 for (Transfer transfer: all) {
                     System.out.println(all);
                 }
+                break;
+            case 5:
+                MenuPrincipal();
                 break;
         }
     }
@@ -261,27 +262,43 @@ public class Main {
         System.out.println("\n 1- Mostrar todas las  transacciones pendientes de validacion" );
         System.out.println("\n 2- Ver mis transacciones sin validar" );
         System.out.println("\n 3- Validar una transaccion" );
-        Wallet walletClient = walletController.getByIdClient(userLogged.getIdClient());
-        int rta=0;
+        System.out.println("\n 4- Salir" );
+        Scanner scan = new Scanner(System.in);
+        int rta=scan.nextInt();
+        var walletClient= walletController.getByIdClient(userLogged.getIdClient());
         switch (rta){
             case 1:
                 List <Transfer> waitingListAll = transferController.getWaitingAll();
-                for (Transfer transfer: waitingListAll) {
-                    System.out.println(transfer);
+                if(waitingListAll.stream().count() != 0)
+                {
+                    System.out.println("\n Todas las transacciones sin validar : ");
+                    for (Transfer transfer: waitingListAll) {
+                        transfer.mostrar();
+                    }
+                }else{
+                    System.out.println("\n No hay transacciones para validar ");
                 }
-
-            break;
-            case 2:
-                System.out.println("\n Sus transacciones sin validar son : ");
-                ArrayList <Transfer> waitingList = transferController.getWaitingT(walletClient.getTranfList());
-                for (Transfer transfer: waitingList) {
-                    System.out.println(transfer);
-                }
-
+                MenuTransacciones();
                 break;
-            case 5:
+            case 2:
+                ArrayList <Transfer> waitingList = transferController.getWaitingT(walletClient.getTranfList());
+                if(waitingList.stream().count() !=0)
+                {
+                    System.out.println("\n Mis transacciones sin validar son : ");
+                    for (Transfer transfer: waitingList) {
+                        transfer.mostrar();
+                    }
+                }else{
+                    System.out.println("\n Ustede no posee transacciones sin validar ");
+                }
+                MenuTransacciones();
+                break;
+            case 3:
+                MenuValidarTransferencia();
+                break;
+            case 4:
                 userLogged= new Client();
-                MenuPrincipal();
+                MenuWallet();
                 break;
 
         }
@@ -289,16 +306,14 @@ public class Main {
 
     public static void MenuTransferencia(Wallet clientWallet)
     {
-
         int flag =0;
         while (flag == 0)
         {
             Scanner scan = new Scanner(System.in);
             System.out.println("\t/// 2- Realizar Tranferencia \n");
             System.out.println("\nIngrese el codigo de la wallet al cual enviar:  ");
-            var uuid= "f7cf6c37-6ff6-4ee4-8c29-d88c077f0e22";
+            var uuid= scan.nextLine();
             var walletReceiver = walletController.getByIdWallet(uuid);
-
             while(flag == 0)
             {
                 if(walletReceiver != null)
@@ -309,14 +324,11 @@ public class Main {
                     var aux =clientWallet.getCripto().getAmount();
                     if( aux >= monto)
                     {
-                        //var montoResta = clientWallet.getCripto().getAmount() -monto;
-                        //var montoSuma = walletReceiver.getCripto().getAmount() + monto;
-                        //walletReceiver.getCripto().setAmount(montoSuma);
-                        //clientWallet.getCripto().setAmount(montoResta);
+                        var montoResta = clientWallet.getCripto().getAmount() -monto;
+                        clientWallet.getCripto().setAmount(montoResta);
                         var newTransfer = new Transfer(monto,clientWallet.getWalletCode().toString(),walletReceiver.getWalletCode().toString(), "UTNCoins", State.WAITING);
-                        clientWallet.getTranfList().add(newTransfer);
+                        clientWallet.getTranfList().add(newTransfer.getTransferCode().toString());
                         walletController.update(clientWallet);
-                        //walletController.Update(walletReceiver);
                         transferController.insert(newTransfer);
                         System.out.println("\n¡ Transferencia realizada con exito !");
                     }else{
@@ -327,13 +339,48 @@ public class Main {
                     System.out.println("\n La wallet ingresada no existe");
                 }
                 System.out.println("Desea continuar ? s/n");
+                scan = new Scanner(System.in);
                 var rta =scan.nextLine();
-                if(rta.toLowerCase() =="n")
+                if(!rta.toLowerCase().equals("s"))
                 {
                     flag =1;
                     MenuWallet();
                 }
             }
+        }
+
+    }
+
+    public static void MenuValidarTransferencia()
+    {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("///// 3- Validar una transaccion");
+        System.out.println("\n Ingrese el codigo de la tranferencia que quiere validar : ");
+        int idTransfer=scan.nextInt();
+        var transfer= transferController.getById(idTransfer);
+
+        if(transfer != null && transfer.getState() != State.CONFIRMED)
+        {
+            var count = transfer.getCountValidate()  + 1;
+            if(count == 3)
+            {
+                transfer.setCountValidate(count);
+                transfer.setState(State.CONFIRMED);
+                transferController.Update(transfer);
+                var wallet =walletController.getByIdWallet(transfer.getUserReceiver());
+                wallet.getCripto().setAmount(wallet.getCripto().getAmount()+transfer.getAmount());
+                walletController.update(wallet);
+                System.out.println("Validacion realizada con exito \n");
+                MenuWallet();
+            }else{
+                transfer.setCountValidate(count);
+                transferController.Update(transfer);
+                System.out.println("Validacion realizada con exito \n");
+                MenuWallet();
+            }
+        }else{
+            System.out.println("\n No existe la transferencia indicada");
+            MenuTransacciones();
         }
 
     }

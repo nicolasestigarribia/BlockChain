@@ -26,9 +26,11 @@ public class TransferController {
         this.transferFile = transferFile;
     }
 
-    public ArrayList <Transfer> getWaitingT(List<Transfer> transferList){
-            ArrayList <Transfer> transferWait  = new ArrayList<>();
-          for ( Transfer transfer: transferList){
+    public ArrayList <Transfer> getWaitingT(List<String> transferList){
+          readFile();
+          ArrayList <Transfer> transferWait  = new ArrayList<>();
+          for ( String code: transferList){
+              var transfer = getByTransferCode(code);
           if (transfer.getState()==State.WAITING ){
               transferWait.add(transfer);
           }
@@ -38,14 +40,13 @@ public class TransferController {
   }
 
     public List <Transfer> getWaitingAll(){
-
-        List <Transfer> transferWait  = getAll();
+        readFile();
+        List <Transfer> transferWait  = new ArrayList<>();
         for ( Transfer transfer: transferList){
             if (transfer.getState()==State.WAITING ){
                 transferWait.add(transfer);
             }
         }
-
         return  transferWait;
     }
 
@@ -77,8 +78,20 @@ public class TransferController {
         {
             return transferList.stream().filter(a -> a.getId() == id).findFirst().get();
         }
+        return  null;
+    }
+
+    public Transfer getByTransferCode(String transferCode)
+    {
+        readFile();
+        Transfer transfer = new Transfer();
+        if( transferList.stream().filter(a -> a.getTransferCode().toString().equals(transferCode)).count() > 0)
+        {
+            return transferList.stream().filter(a -> a.getTransferCode().toString().equals(transferCode)).findFirst().get();
+        }
         return  transfer;
     }
+
 
     public List<Transfer> getAll()
     {

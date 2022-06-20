@@ -50,4 +50,12 @@ public class Cripto implements Serializable {
                 ", price=" + price +
                 '}';
     }
+    public void mostrar()
+    {
+        System.out.println("\n---------------------");
+        System.out.println("\n Nombre: "+ name);
+        System.out.println("\n Monto: "+ amount);
+        System.out.println("\n Precio: "+ price);
+        System.out.println("\n---------------------");
+    }
 }

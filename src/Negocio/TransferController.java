@@ -99,7 +99,7 @@ public class TransferController {
         return transferList;
     }
 
-    public void Update(Transfer transferUpdate){
+    public void update(Transfer transferUpdate){
 
 
         try {
@@ -111,6 +111,25 @@ public class TransferController {
         } catch (IOException e) {
             System.out.println("Error al intentar escribir el archivo : "+ e.getMessage());
         }
+    }
+
+    public boolean validateValidator(String userUUID, Transfer transfer) {
+
+        if (!transfer.getListIdValidators().isEmpty()) {
+            for (String a : transfer.getListIdValidators()) {
+                if (a.equals(userUUID)) {
+                    return false;
+                }
+            }
+            if(transfer.getListIdValidators().size()<3){
+                transfer.getListIdValidators().add(userUUID);
+            }
+
+        }else {
+            transfer.getListIdValidators().add(userUUID);
+        }
+        update(transfer);
+        return true;
     }
 
     private void readFile()

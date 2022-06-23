@@ -161,7 +161,6 @@ public class Main {
             newWallet.setWalletCode(clientNew.getIdWallet());
             walletController.Insert(newWallet);
 
-
             System.out.println("\n Usuario creado con exito, su UUID es : " + userController.getById(idCLient).getUuidCliente());
             System.out.println("Guarde su codigo de seguridad, no lo comparta con nadie \n");
             MenuPrincipal();
@@ -172,8 +171,10 @@ public class Main {
     public static void MenuLogin()
     {
         boolean rta = false;
+        Client client = new Client();
         while (!rta){
-            Scanner scan = new Scanner(System.in);
+            try{
+                Scanner scan = new Scanner(System.in);
             System.out.println("\t\n///////  Login //////// \n");
             System.out.println("Ingrese Mail :");
             String email= scan.nextLine();
@@ -182,8 +183,12 @@ public class Main {
             System.out.println("\n Ingrese Codigo UUID : ");
             String uuid = scan.nextLine();
 
-            try{
-            var client = userController.login(email.trim(),pass.trim(),uuid.trim());
+            client = userController.login(email.trim(),pass.trim(),uuid.trim());
+            }catch (IllegalArgumentException ex)
+            {
+                System.out.println("Datos erroneos"+ ex.getMessage());
+            }
+
             if(client != null)
             {
                 rta = true;
@@ -342,18 +347,29 @@ public class Main {
     {
         Scanner scan = new Scanner(System.in);
         System.out.println("///// 3- Validar una transaccion");
+        List <Transfer> waitingListAll = transferController.getWaitingAll();
+        if(waitingListAll.stream().count() != 0) {
+            System.out.println("\n Todas las transacciones sin validar : ");
+            for (Transfer transfer : waitingListAll) {
+                transfer.mostrar();
+            }
+        }
         System.out.println("\n Ingrese el codigo de la tranferencia que quiere validar : ");
         int idTransfer=scan.nextInt();
         var transfer= transferController.getById(idTransfer);
-
-        if(transfer != null && transfer.getState() != State.CONFIRMED)
+        boolean validator = true;
+        if(transfer.getListIdValidators() != null)
+        {
+            validator = transferController.validateValidator(userLogged.getUuidCliente().toString(),transfer);
+        }
+        if(transfer != null && transfer.getState() != State.CONFIRMED && validator == true)
         {
             var count = transfer.getCountValidate()  + 1;
             if(count == 3)
             {
                 transfer.setCountValidate(count);
                 transfer.setState(State.CONFIRMED);
-                transferController.Update(transfer);
+                transferController.update(transfer);
                 var wallet =walletController.getByIdWallet(transfer.getUserReceiver());
                 wallet.getCripto().setAmount(wallet.getCripto().getAmount()+transfer.getAmount());
                 walletController.update(wallet);
@@ -361,13 +377,19 @@ public class Main {
                 MenuWallet();
             }else{
                 transfer.setCountValidate(count);
-                transferController.Update(transfer);
+                transferController.update(transfer);
                 System.out.println("Validacion realizada con exito \n");
                 MenuWallet();
             }
         }else{
-            System.out.println("\n No existe la transferencia indicada");
-            MenuTransacciones();
+            if(validator == false)
+            {
+                System.out.println("\n Usted ya valido esta tranferencia anteriormente");
+                MenuTransacciones();
+            }else{
+                System.out.println("\n No existe la transferencia indicada");
+                MenuTransacciones();
+            }
         }
 
     }

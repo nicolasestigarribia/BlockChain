@@ -4,6 +4,8 @@ package Modelos;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ public class Transfer implements Serializable {
     private String criptoName;
     private State state;
     private UUID transferCode;
+    private List<String> listIdValidators;
 
     public Transfer(int amount, String userSender, String userReceiver, String criptoName, State state) {
         this.amount = amount;
@@ -26,6 +29,16 @@ public class Transfer implements Serializable {
         this.criptoName = criptoName;
         this.state = state;
         this.transferCode = UUID.randomUUID();
+        this.listIdValidators = new ArrayList<>();
+    }
+
+
+    public List<String> getListIdValidators() {
+        return listIdValidators;
+    }
+
+    public void setListIdValidators(List<String> listIdValidators) {
+        this.listIdValidators = listIdValidators;
     }
 
     public Transfer() {
@@ -142,6 +155,7 @@ public class Transfer implements Serializable {
         System.out.println("\nRecepetor: " + userReceiver);
         System.out.println("\nCripto: "+ criptoName);
         System.out.println("\nEstado: "+ state);
+        System.out.println("\nMonto: "+ getAmount());
         System.out.println("\n------------------------------");
     }
 }

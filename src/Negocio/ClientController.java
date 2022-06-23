@@ -26,14 +26,19 @@ public class ClientController {
     //Retorno true si el login fue correcto.
     public Client login(String email, String pass, String code)
     {
-        Client clientLogin = new Client(email,pass);
-        clientLogin.setUuidCliente(UUID.fromString(code));
-        readFile();
+        try {
+            Client clientLogin = new Client(email,pass);
+            clientLogin.setUuidCliente(UUID.fromString(code));
+            readFile();
             for (var client: clientList) {
                 if (clientLogin.equals(client)){
                     return client;
                 }
             }
+        }catch (IllegalArgumentException ex)
+        {
+            System.out.println("\n Argumentos invalidos ");
+        }
         return null;
     }
 

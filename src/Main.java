@@ -168,42 +168,38 @@ public class Main {
 
     }
 
-    public static void MenuLogin()
-    {
+    public static void MenuLogin() {
         boolean rta = false;
         Client client = new Client();
-        while (!rta){
-            try{
+        while (!rta) {
+            try {
                 Scanner scan = new Scanner(System.in);
-            System.out.println("\t\n///////  Login //////// \n");
-            System.out.println("Ingrese Mail :");
-            String email= scan.nextLine();
-            System.out.println("\n Ingrese contraseña:");
-            String pass = scan.nextLine();
-            System.out.println("\n Ingrese Codigo UUID : ");
-            String uuid = scan.nextLine();
+                System.out.println("\t\n///////  Login //////// \n");
+                System.out.println("Ingrese Mail :");
+                String email = scan.nextLine();
+                System.out.println("\n Ingrese contraseña:");
+                String pass = scan.nextLine();
+                System.out.println("\n Ingrese Codigo UUID : ");
+                String uuid = scan.nextLine();
 
-            client = userController.login(email.trim(),pass.trim(),uuid.trim());
-            }catch (IllegalArgumentException ex)
-            {
-                System.out.println("Datos erroneos"+ ex.getMessage());
+                client = userController.login(email.trim(), pass.trim(), uuid.trim());
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Datos erroneos" + ex.getMessage());
             }
-
-            if(client != null)
-            {
-                rta = true;
-                 userLogged =client;
-                 MenuWallet();
-            }else{
-                System.out.println("\n ------ Usuario invalido ------");
-                MenuPrincipal();
-            }}catch(IllegalArgumentException ex) {
+            try {
+                if (client != null) {
+                    rta = true;
+                    userLogged = client;
+                    MenuWallet();
+                } else {
+                    System.out.println("\n ------ Usuario invalido ------");
+                    MenuPrincipal();
+                }
+            } catch (IllegalArgumentException ex) {
                 System.out.println("Argumento invalido");
             }
-            }
-
         }
-
+    }
 
     public static void MenuWallet()
     {
